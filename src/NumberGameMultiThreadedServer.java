@@ -8,8 +8,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class NumberGameMultiThreadedServer extends Thread {
 
-    private static int lowerLimit;
-    private static int upperLimit;
     private final Socket clientSocket;
 
     NumberGameMultiThreadedServer(Socket socket){
@@ -24,10 +22,10 @@ public class NumberGameMultiThreadedServer extends Thread {
             System.out.println("Client Accepted");
             // send initial prompt to client
             sendMessageToClient(os, "Server Saying Hello"); // send initial message to client
-            lowerLimit = parseToInt(is.readLine());
-            upperLimit = parseToInt(is.readLine());
+            int lowerLimit = parseToInt(is.readLine());
+            int upperLimit = parseToInt(is.readLine());
             int clientGuess = parseToInt(is.readLine());
-            int numberOfTries = checkNumber(os,is, clientGuess);
+            int numberOfTries = checkNumber(os,is, clientGuess, lowerLimit, upperLimit);
             sendMessageToClient(os, "true");
             sendMessageToClient(os, "Congrats, you guessed correctly, it took you " + numberOfTries + " attempts");
         } catch (Exception e) {
@@ -73,7 +71,7 @@ public class NumberGameMultiThreadedServer extends Thread {
     }
 
 
-    public static int checkNumber(ObjectOutputStream os,BufferedReader is, int number){
+    public static int checkNumber(ObjectOutputStream os,BufferedReader is, int number, int lowerLimit, int upperLimit){
         int randomNum = ThreadLocalRandom.current().nextInt(lowerLimit, upperLimit);
         int guessCount = 1;
         try{

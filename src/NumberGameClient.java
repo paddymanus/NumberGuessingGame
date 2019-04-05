@@ -49,8 +49,8 @@ public class NumberGameClient {
            sendMessageToServer(os, Integer.toString(lowerLimit)); // number sent to server
             System.out.print("Enter Upper Limit Number ");
            upperLimit = Integer.parseInt(userInput.readLine());
-           while (!checkNumberIsPositive(upperLimit)){ // method checks the number is positive
-               System.out.print("Please enter a positive number ");
+           while (!checkNumberIsPositive(upperLimit) || !higherThanLowerNum(upperLimit)){ // method checks the number is positive
+               System.out.print("Please enter a positive number higher than the lower limit " + lowerLimit);
                upperLimit = Integer.parseInt(userInput.readLine());
            }
             sendMessageToServer(os, Integer.toString(upperLimit));
@@ -107,6 +107,16 @@ public class NumberGameClient {
             response = false;
         }
         else{
+            response = true;
+        }
+        return response;
+    }
+
+    public static boolean higherThanLowerNum(int number){
+        boolean response;
+        if(number < lowerLimit){
+            response = false;
+        } else {
             response = true;
         }
         return response;
